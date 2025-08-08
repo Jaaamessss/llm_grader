@@ -1,0 +1,18 @@
+# File paths
+data_file: "data/combined_answers.csv"
+output_dir: "artifacts"
+r_script: "r/protoclust.R"
+
+# SBERT model
+sbert_model: "all-MiniLM-L6-v2"
+
+# Clustering
+distance_threshold: 0.68
+max_clusters: null  # optional, can be set to an int if you want fixed clusters
+
+# Flags for review
+inner_product_flag_threshold: 0.1  # flag if another prototype is within this similarity
+
+# Plotting
+dendrogram_file: "artifacts/dendrogram.pdf"
+scree_plot_file: "artifacts/scree_plot.pdf"

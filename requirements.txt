@@ -1,0 +1,20 @@
+# Core
+numpy
+pandas
+pyyaml
+
+# Sentence embeddings
+torch
+transformers
+sentence-transformers
+
+# Visualization
+matplotlib
+seaborn
+scikit-learn
+
+# R + Python bridge
+rpy2
+
+# Interactive editing (if needed later)
+prompt-toolkit
