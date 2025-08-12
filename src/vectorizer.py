@@ -15,7 +15,7 @@ class Vectorizer:
     Expects config.yaml in the PROJECT ROOT (one level above src/), with keys:
       data_file: "data/combined_answers.csv"
       output_dir: "artifacts"
-      sbert_model: "all-MiniLM-L6-v2"
+      sbert_model: "all-mpnet-base-v2"
     """
     def __init__(self, config_path: str = "config.yaml"):
         # Always resolve config relative to project root
@@ -35,7 +35,7 @@ class Vectorizer:
 
         self.data_file = (project_root / self.cfg["data_file"]).resolve()
         self.output_dir = (project_root / self.cfg.get("output_dir", "artifacts")).resolve()
-        self.model_name = self.cfg.get("sbert_model", "all-MiniLM-L6-v2")
+        self.model_name = self.cfg.get("sbert_model", "all-mpnet-base-v2")
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
         # Output paths (under output_dir)

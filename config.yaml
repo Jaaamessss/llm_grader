@@ -1,18 +1,55 @@
-# File paths
-data_file: "data/combined_answers.csv"
+# -----------------------------
+# Project-wide configuration
+# -----------------------------
+
+# Where all artifacts (vectors, responses, clustering) live
 output_dir: "artifacts"
-r_script: "r/protoclust.R"
 
-# SBERT model
-sbert_model: "all-MiniLM-L6-v2"
+# Vectorizer settings (already used by your vectorizer.py)
+data_file: "data/combined_answers.csv"
+sbert_model: "all-mpnet-base-v2"
 
-# Clustering
-distance_threshold: 0.68
-max_clusters: null  # optional, can be set to an int if you want fixed clusters
+# -----------------------------
+# Clustering (R + protoclust)
+# -----------------------------
+clustering:
+  vectors_csv: "artifacts/vectors.csv"
+  pc_rds: "artifacts/protoclust_pc.rds"
+  dendrogram_pdf: "artifacts/dendrogram.pdf"
+  scree_pdf: "artifacts/scree_plot.pdf"
+  clusters_initial_csv: "artifacts/clusters_initial.csv"
 
-# Flags for review
-inner_product_flag_threshold: 0.1  # flag if another prototype is within this similarity
+# -----------------------------
+# Editor (prototypes + merges/splits)
+# -----------------------------
+editor:
+  clusters_csv: "artifacts/clusters_initial.csv"
+  responses_csv: "artifacts/responses.csv"
+  clusters_edited_csv: "artifacts/clusters_edited.csv"
+  prototype_summary_csv: "artifacts/cluster_summary_full.csv"
 
-# Plotting
-dendrogram_file: "artifacts/dendrogram.pdf"
-scree_plot_file: "artifacts/scree_plot.pdf"
+# -----------------------------
+# Inner-product reassignment
+# -----------------------------
+inner_product:
+  # Inputs
+  vectors_csv: "artifacts/vectors.csv"            # id, v0, v1, ...
+  clusters_csv: "artifacts/clusters_edited.csv"   # id, cluster, is_prototype
+  responses_csv: "artifacts/responses.csv"        # id, answer
+
+  # Outputs
+  refined_csv: "artifacts/clusters_refined.csv"
+  candidates_csv: "artifacts/cluster_candidates.csv"
+
+  # Candidate-flagging thresholds (optional):
+  # If both are null (or omitted), we will ONLY reassign; no candidates.csv
+  tau: 0.70        # "far" from all prototypes: max_sim < tau
+  delta: 0.05      # "ambiguous": top1 - top2 < delta
+
+  # Consider ambiguity ONLY when the second-best prototype is from a different cluster.
+  # Set to false if you want ambiguity even within the same cluster (multiple protos/cluster).
+  ambiguity_across_different_clusters_only: true
+
+  # Optional outlier cluster assignment (disabled if null). Used only when tau is set.
+  outlier_cluster: null
+
